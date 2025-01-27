@@ -11,6 +11,7 @@ export default function Page() {
     Array<{ text: string; isUser: boolean }>
   >([]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -25,8 +26,8 @@ export default function Page() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Clear input immediately after submission
     setInput("");
+    setIsLoading(true);
 
     // Add user message
     setMessages((prev) => [...prev, { text: input, isUser: true }]);
@@ -56,6 +57,8 @@ export default function Page() {
           isUser: false,
         },
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,6 +100,12 @@ export default function Page() {
               {messages.map((message, i) => (
                 <ChatMessage key={i} message={message} />
               ))}
+              {isLoading && (
+                <ChatMessage
+                  message={{ text: "", isUser: false }}
+                  isLoading={true}
+                />
+              )}
               <div ref={messagesEndRef} />
             </div>
           </div>
