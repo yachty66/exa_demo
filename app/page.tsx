@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,15 @@ export default function Page() {
     Array<{ text: string; isUser: boolean }>
   >([]);
   const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +41,7 @@ export default function Page() {
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-white mb-3">
-              What do you want to know?
+              What do you want to know from Exa?
             </h1>
             <p className="text-gray-400">
               Ask anything and get a simple response.
@@ -64,6 +73,7 @@ export default function Page() {
               {messages.map((message, i) => (
                 <ChatMessage key={i} message={message} />
               ))}
+              <div ref={messagesEndRef} />
             </div>
           </div>
           <div className="border-t border-gray-800 p-4">
