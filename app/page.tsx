@@ -25,6 +25,9 @@ export default function Page() {
     e.preventDefault();
     if (!input.trim()) return;
 
+    // Clear input immediately after submission
+    setInput("");
+
     // Add user message
     setMessages((prev) => [...prev, { text: input, isUser: true }]);
 
@@ -54,9 +57,6 @@ export default function Page() {
         },
       ]);
     }
-
-    // Clear input
-    setInput("");
   };
 
   return (
