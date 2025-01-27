@@ -44,9 +44,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: data.error }, { status: 400 });
     }
 
-    // Extract relevant information from the first result
-    const result = data.results?.[0];
-    if (!result) {
+    // Extract relevant information from all results (up to 5)
+    const formattedResponse =
+      data.results?.slice(0, 5).map((result) => ({
+        title: result.title,
+        summary: result.summary,
+        url: result.url,
+      })) || [];
+
+    if (formattedResponse.length === 0) {
       return NextResponse.json(
         {
           error: "No results found",
@@ -54,16 +60,6 @@ export async function POST(request: Request) {
         { status: 404 }
       );
     }
-
-    // Format the response with all relevant information
-    const formattedResponse = {
-      title: result.title,
-      summary: result.summary,
-      authors: result.author,
-      publishedDate: result.publishedDate,
-      highlights: result.highlights,
-      url: result.url,
-    };
 
     // Log the formatted response we're sending back
     console.log(
