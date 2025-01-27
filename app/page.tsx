@@ -21,15 +21,39 @@ export default function Page() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
     // Add user message
     setMessages((prev) => [...prev, { text: input, isUser: true }]);
 
-    // Add hardcoded response
-    setMessages((prev) => [...prev, { text: "hello world", isUser: false }]);
+    try {
+      const response = await fetch("/api/exa", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: input }),
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Add the formatted response to messages
+      setMessages((prev) => [...prev, { text: data, isUser: false }]);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "Sorry, there was an error processing your request.",
+          isUser: false,
+        },
+      ]);
+    }
 
     // Clear input
     setInput("");
