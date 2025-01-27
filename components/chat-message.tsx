@@ -5,9 +5,6 @@ interface ChatMessageProps {
       | {
           title: string;
           summary: string;
-          authors: string;
-          publishedDate: string;
-          highlights: string[];
           url: string;
         };
     isUser: boolean;
@@ -30,7 +27,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
     );
   }
 
-  // Render formatted research paper response
+  // Render formatted response
   return (
     <div className="p-4 rounded-lg bg-gray-800/50">
       <div className="flex items-start gap-2">
@@ -40,31 +37,14 @@ export function ChatMessage({ message }: ChatMessageProps) {
             {message.text.title}
           </h3>
           <p className="text-gray-300 mb-2">{message.text.summary}</p>
-          <div className="text-sm text-gray-400">
-            <p>Authors: {message.text.authors}</p>
-            <p>
-              Published:{" "}
-              {new Date(message.text.publishedDate).toLocaleDateString()}
-            </p>
-            {message.text.highlights.length > 0 && (
-              <div className="mt-2">
-                <p className="font-semibold">Key Highlights:</p>
-                <ul className="list-disc list-inside">
-                  {message.text.highlights.map((highlight, i) => (
-                    <li key={i}>{highlight}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <a
-              href={message.text.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:underline mt-2 inline-block"
-            >
-              Read Paper →
-            </a>
-          </div>
+          <a
+            href={message.text.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline mt-2 inline-block"
+          >
+            Link →
+          </a>
         </div>
       </div>
     </div>

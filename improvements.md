@@ -104,3 +104,23 @@ response = requests.request("POST", url, json=payload, headers=headers)
 
 print(response.text)
 ```
+
+
+-------------
+
+1. When making a request the following parameters can be set to narrow down the results to improve speed and quality:
+```
+"type": "auto",
+"category": "research paper",
+"numResults": 10,
+"includeDomains": ["arxiv.org", "paperswithcode.com"],
+"excludeDomains": [],
+"startCrawlDate": "2023-01-01T00:00:00.000Z",
+"endCrawlDate": "2023-12-31T00:00:00.000Z",
+"startPublishedDate": "2023-01-01T00:00:00.000Z",
+"endPublishedDate": "2023-12-31T00:00:00.000Z",
+"includeText": ["large language model"],
+"excludeText": ["course"],
+...
+```
+2. before processing the actual response of the user we can use a llm to find the parameters first
