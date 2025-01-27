@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         query,
         useAutoprompt: true,
-        numResults: 1,
+        numResults: 5,
         contents: {
           text: true,
           highlights: {
@@ -36,6 +36,9 @@ export async function POST(request: Request) {
 
     const response = await fetch("https://api.exa.ai/search", options);
     const data = await response.json();
+
+    // Log the full response from Exa API
+    console.log("Exa API Response:", JSON.stringify(data, null, 2));
 
     if (data.error) {
       return NextResponse.json({ error: data.error }, { status: 400 });
@@ -61,6 +64,12 @@ export async function POST(request: Request) {
       highlights: result.highlights,
       url: result.url,
     };
+
+    // Log the formatted response we're sending back
+    console.log(
+      "Formatted Response:",
+      JSON.stringify(formattedResponse, null, 2)
+    );
 
     return NextResponse.json(formattedResponse);
   } catch (error) {
